@@ -1,0 +1,13 @@
+body {
+    background-image: url(../img/36128.png);
+    background-size: cover;
+}
+
+canvas {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+}
