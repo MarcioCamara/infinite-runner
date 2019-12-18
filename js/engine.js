@@ -33,10 +33,12 @@ let HUD = {
 let menu = {
     x: 0,
     y: 50,
-    firstTextX: 90,
+    firstTextX: 175,
     firstTextY: 190,
-    secondTextX: 0,
-    secondTextY: 50,
+    secondTextX: 50,
+    secondTextY: 295,
+    thirdTextX: 350,
+    thirdTextY: 295,
     imageX: 60,
     imageY: 54,
     width: menuImage.width,
@@ -54,7 +56,11 @@ let menu = {
             // this.color = '#00A878';
             startText.draw(this.firstTextX, this.firstTextY);
         } else if (actualState === states.lose) {
+            loseText.draw(this.firstTextX - 50, this.firstTextY);
             loseImage.draw(this.imageX, this.imageY);
+
+            recordText.draw(this.secondTextX, this.secondTextY);
+            scoreText.draw(this.thirdTextX - 50, this.thirdTextY);
         }
 
         // context.fillStyle = this.color;
@@ -63,36 +69,34 @@ let menu = {
         if (actualState === states.lose) {
             context.save();
             context.translate(canvasWidth / 2, canvasHeight / 2);
-            context.fillStyle = '#FFFFFF';
+            context.fillStyle = '#000000';
 
             const fontWidth = 26;
 
             if (player.score > record) {
                 context.fillText('Novo Record!', -150, -175);
             } else if (record < 10) {
-                context.fillText('Record: ' + record, -(200 + fontWidth) / 2, -175);
+                context.fillText(record, -(350 + fontWidth) / 2, 95);
             } else if (record >= 10 && record < 100) {
-                context.fillText('Record: ' + record, -(200 + fontWidth * 2) / 2, -175);
+                context.fillText(record, -(350 + fontWidth * 2) / 2, 95);
             } else if (record >= 100 && record < 1000) {
-                context.fillText('Record: ' + record, -(200 + fontWidth * 3) / 2, -175);
+                context.fillText(record, -(350 + fontWidth * 3) / 2, 95);
             } else if (record >= 1000 && record < 10000) {
-                context.fillText('Record: ' + record, -(200 + fontWidth * 4) / 2, -175);
+                context.fillText(record, -(350 + fontWidth * 4) / 2, 95);
             } else if (record >= 10000) {
-                context.fillText('Record: ' + record, -(200 + fontWidth * 5) / 2, -175);
+                context.fillText(record, -(350 + fontWidth * 5) / 2, 95);
             }
 
-            context.fillText('Pontos:', -75, -75);
-
             if (player.score < 10) {
-                context.fillText(player.score, -fontWidth / 2, 0);
+                context.fillText(player.score, (50 + fontWidth / 2), 95);
             } else if (player.score >= 10 && player.score < 100) {
-                context.fillText(player.score, -fontWidth / 2 * 2, 0);
+                context.fillText(player.score, -fontWidth / 2 * 2, 95);
             } else if (player.score >= 100 && player.score < 1000) {
-                context.fillText(player.score, -fontWidth / 2 * 3, 0);
+                context.fillText(player.score, -fontWidth / 2 * 3, 95);
             } else if (player.score >= 1000 && player.score < 10000) {
-                context.fillText(player.score, -fontWidth / 2 * 4, 0);
+                context.fillText(player.score, -fontWidth / 2 * 4, 95);
             } else if (player.score >= 10000) {
-                context.fillText(player.score, -fontWidth / 2 * 5, 0);
+                context.fillText(player.score, -fontWidth / 2 * 5, 95);
             }
 
             context.restore();
@@ -201,10 +205,12 @@ let obstacles = {
     insert: function () {
         this.elements.push({
             x: canvasWidth,
-            width: 50,
-            height: 30 + Math.floor(121 * Math.random()),
+            width: 50, // 50,
+            height: 30, //30 + Math.floor(121 * Math.random()),
             color: this.generateColor(),
         });
+
+        console.log(tree);
 
         this.insertTime = 35 + Math.floor(25 * Math.random());
     },
@@ -242,8 +248,12 @@ let obstacles = {
         for (let i = 0; i < this.elements.length; i++) {
             let element = this.elements[i];
 
-            context.fillStyle = element.color;
-            context.fillRect(element.x, environmentFloor.y - element.height, element.width, element.height);
+            tree.draw(element.x, environmentFloor.y - element.height);
+            console.log(element.x);
+            console.log(element.height);
+
+            // context.fillStyle = element.color;
+            // context.fillRect(element.x, environmentFloor.y - element.height, element.width, element.height);
         }
     },
 }
@@ -310,17 +320,15 @@ function draw() {
     // context.fillStyle = '#8CA5E2';
     // context.fillRect(0, 0, canvasWidth, canvasHeight);
     background.draw(0, 0);
-
+    environmentFloor.draw();
+    player.draw();
 
     if (actualState === states.start || actualState === states.lose) {
         menu.draw();
     } else if (actualState === states.playing) {
         HUD.draw();
         obstacles.draw();
-    }
-
-    environmentFloor.draw();
-    player.draw();
+    }    
 }
 
 // inicializa o jogo
