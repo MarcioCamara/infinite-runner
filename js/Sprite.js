@@ -27,7 +27,8 @@ var floor = new Sprite(0, 570, 600, 50);
 var menuImage = new Sprite(0, 710, 600, 360);
 var startImage = new Sprite(0, 0, 0, 0);
 var loseImage = new Sprite(712, 116, 95, 100);
+var newRecordImage = new Sprite(801, 0, 130, 132);
 
 var socialMedias = new Sprite(711, 240, 35, 75);
 
-var tree = new Sprite(713, 246, 50, 30);
+var rock = new Sprite(703, 330, 50, 40);

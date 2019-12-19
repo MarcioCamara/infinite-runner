@@ -17,16 +17,19 @@ let states = {
 
 let HUD = {
     x: 30,
-    y: fontSize * 1.36,
+    y: 30,
     width: 0,
     height: 0,
-    color: '#643421',
-    font: '68px OceanRush',
 
     draw: function () {
-        context.fillStyle = this.color;
-        context.font = this.font;
-        context.fillText(player.score, this.x, this.y);
+        context.fillStyle = '#643421';
+
+        context.font = '18px OceanRush';
+        context.fillText('Pontos', this.x, this.y);
+
+        context.font = '68px OceanRush';
+        context.fillText(player.score, this.x, this.y + 50);
+
     }
 };
 
@@ -73,11 +76,18 @@ let menu = {
 
             //startText.draw(this.firstTextX, this.firstTextY);
         } else if (actualState === states.lose) {
-            context.font = '68px OceanRush';
             context.fillStyle = '#643421';
-            context.fillText('Fim de Jogo', this.firstTextX - 100, this.firstTextY);
+            
+            if (player.score > record) {
+                context.font = '60px OceanRush';
+                context.fillText('Novo Record!', this.firstTextX - 115, this.firstTextY);
+                newRecordImage.draw(this.imageX - 30, this.imageY - 30);
+            } else {
+                context.font = '68px OceanRush';
+                context.fillText('Fim de Jogo', this.firstTextX - 100, this.firstTextY);
+                loseImage.draw(this.imageX, this.imageY);
+            }
 
-            loseImage.draw(this.imageX, this.imageY);
 
             // recordText.draw(this.secondTextX, this.secondTextY);
             // scoreText.draw(this.thirdTextX - 50, this.thirdTextY);
@@ -97,9 +107,7 @@ let menu = {
             context.fillText('Pontos:', (75 + fontWidth) / 2, 25);
 
             context.font = '68px OceanRush';
-            if (player.score > record) {
-                context.fillText('Novo Record!', -150, -175);
-            } else if (record < 10) {
+            if (record < 10) {
                 context.fillText(record, -(350 + fontWidth) / 2, 70);
             } else if (record >= 10 && record < 100) {
                 context.fillText(record, -(350 + fontWidth * 2) / 2, 70);
@@ -192,7 +200,7 @@ let player = {
 
         context.translate(this.x + this.width / 2, this.y + this.height / 2);
         context.rotate(this.rotation);
-        character.draw(-this.width / 2, -this.height / 2);
+        character.draw(-this.width / 2, -(this.height - 10) / 2);
 
         context.restore();
     },
@@ -225,15 +233,18 @@ let obstacles = {
         return color;
     },
 
+    generateSize: function() {
+        return (1 + Math.floor(5 * Math.random()));
+    },
+
     insert: function () {
         this.elements.push({
             x: canvasWidth,
-            width: 50, // 50,
-            height: 30, //30 + Math.floor(121 * Math.random()),
+            width: 50,
+            height: 40,
             color: this.generateColor(),
+            size: this.generateSize(),
         });
-
-        console.log(tree);
 
         this.insertTime = 35 + Math.floor(25 * Math.random());
     },
@@ -256,7 +267,7 @@ let obstacles = {
                 actualState = states.lose;
                 player.y = canvasHeight - player.height * 3;
             } else if (element.x === 0) {
-                player.score += Math.floor(element.height / 3);
+                player.score += Math.floor(element.size);
             } else if (element.x <= -element.width) {
                 this.elements.splice(i, 1);
             }
@@ -271,9 +282,10 @@ let obstacles = {
         for (let i = 0; i < this.elements.length; i++) {
             let element = this.elements[i];
 
-            tree.draw(element.x, environmentFloor.y - element.height);
-            console.log(element.x);
-            console.log(element.height);
+            // const rockHeight = 40;
+            for(let j = 1; j <= element.size; j++) {
+                rock.draw(element.x, environmentFloor.y - (element.height - 5) * j);
+            }
 
             // context.fillStyle = element.color;
             // context.fillRect(element.x, environmentFloor.y - element.height, element.width, element.height);
