@@ -11,3 +11,8 @@ canvas {
     right: 0px;
     margin: auto;
 }
+
+@font-face {
+    font-family: 'OceanRush';
+    src: url('../fonts/OceanRush.otf');
+}
