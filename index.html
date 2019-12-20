@@ -9,16 +9,24 @@
 
     <link rel="shortcut icon" href="img/favicon.ico" />
 
+    <link rel="stylesheet" type="text/css" href="css/flags.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body>
-    <script>
+    <label>
+        <input id="pt-br" class="flag-radio" lang="pt-br" onclick="alterLanguage(this);" type="radio" name="lang" checked>
+        <img class="flag-image" src="img/bandeira_brasil.png">
+    </label>
 
-    </script>
+    <label>
+        <input id="en-us" class="flag-radio" lang="en-us" onclick="alterLanguage(this);" type="radio" name="lang">
+        <img class="flag-image" src="img/usa_flag.png">
+    </label>
 </body>
 
 <script src="js/Sprite.js"></script>
+<script src="js/scripts.js"></script>
 <script src="js/engine.js"></script>
 
 </html>

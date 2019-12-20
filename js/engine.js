@@ -7,6 +7,7 @@ let speed = 6;
 let actualState;
 let fontSize = 50;
 let record;
+let language;
 let image;
 
 let states = {
@@ -25,7 +26,12 @@ let HUD = {
         context.fillStyle = '#643421';
 
         context.font = '18px OceanRush';
-        context.fillText('Pontos', this.x, this.y);
+
+        if (language === 'pt-br') {
+            context.fillText('Pontos', this.x, this.y);
+        } else if (language === 'en-us') {
+            context.fillText('Score', this.x, this.y);
+        }
 
         context.font = '68px OceanRush';
         context.fillText(player.score, this.x, this.y + 50);
@@ -59,14 +65,28 @@ let menu = {
             // this.color = '#00A878';
             context.font = '68px OceanRush';
             context.fillStyle = '#643421';
-            context.fillText('Iniciar', this.firstTextX, this.firstTextY);
+
+            if (language === 'pt-br') {
+                context.fillText('Iniciar', this.firstTextX, this.firstTextY);
+            } else if (language === 'en-us') {
+                context.fillText('Start', this.firstTextX, this.firstTextY);
+            }
 
             context.font = '13px OceanRush';
             context.fillText('JS Super Infinite Runner 2D', this.secondTextX, this.secondTextY);
 
             context.font = '11px OceanRush';
-            context.fillText('Desenvolvido por Marcio Camara', this.secondTextX - 3, this.secondTextY + 30);
-            context.fillText('Ilustrado por brgfx e Freepik', this.secondTextX + 10, this.secondTextY + 60);
+            if (language === 'pt-br') {
+                context.fillText('Desenvolvido por Marcio Camara', this.secondTextX - 3, this.secondTextY + 30);
+            } else if (language === 'en-us') {
+                context.fillText('Developed by Marcio Camara', this.secondTextX - 3, this.secondTextY + 30);
+            }
+
+            if (language === 'pt-br') {
+                context.fillText('Ilustrado por brgfx e Freepik', this.secondTextX + 10, this.secondTextY + 60);
+            } else if (language === 'en-us') {
+                context.fillText('Illustrated by brgfx e Freepik', this.secondTextX + 10, this.secondTextY + 60);
+            }
 
             socialMedias.draw(this.thirdTextX, this.thirdTextY + 30);
 
@@ -77,14 +97,25 @@ let menu = {
             //startText.draw(this.firstTextX, this.firstTextY);
         } else if (actualState === states.lose) {
             context.fillStyle = '#643421';
-            
+
             if (player.score > record) {
                 context.font = '60px OceanRush';
-                context.fillText('Novo Record!', this.firstTextX - 115, this.firstTextY);
+
+                if (language === 'pt-br') {
+                    context.fillText('Novo Record!', this.firstTextX - 115, this.firstTextY);
+                } else if (language === 'en-us') {
+                    context.fillText('New Record!', this.firstTextX - 115, this.firstTextY);
+                }
+
                 newRecordImage.draw(this.imageX - 30, this.imageY - 30);
             } else {
                 context.font = '68px OceanRush';
-                context.fillText('Fim de Jogo', this.firstTextX - 100, this.firstTextY);
+
+                if (language === 'pt-br') {
+                    context.fillText('Fim de Jogo', this.firstTextX - 100, this.firstTextY);
+                } else if (language === 'en-us') {
+                    context.fillText('Game Over', this.firstTextX - 100, this.firstTextY);
+                }
                 loseImage.draw(this.imageX, this.imageY);
             }
 
@@ -104,7 +135,12 @@ let menu = {
 
             context.font = '18px OceanRush';
             context.fillText('Record:', -(350 + fontWidth) / 2, 25);
-            context.fillText('Pontos:', (75 + fontWidth) / 2, 25);
+
+            if (language === 'pt-br') {
+                context.fillText('Pontos:', (75 + fontWidth) / 2, 25);
+            } else if (language === 'en-us') {
+                context.fillText('Score:', (75 + fontWidth) / 2, 25);
+            }
 
             context.font = '68px OceanRush';
             if (record < 10) {
@@ -233,7 +269,7 @@ let obstacles = {
         return color;
     },
 
-    generateSize: function() {
+    generateSize: function () {
         return (1 + Math.floor(5 * Math.random()));
     },
 
@@ -283,7 +319,7 @@ let obstacles = {
             let element = this.elements[i];
 
             // const rockHeight = 40;
-            for(let j = 1; j <= element.size; j++) {
+            for (let j = 1; j <= element.size; j++) {
                 rock.draw(element.x, environmentFloor.y - (element.height - 5) * j);
             }
 
@@ -294,6 +330,16 @@ let obstacles = {
 }
 
 function clickOnScreen(event) {
+    var rectNav = canvas.getBoundingClientRect();
+    var pos = {
+        x: event.clientX - rectNav.left,
+        y: event.clientY - rectNav.top
+    };
+
+    if (!(pos.x > background.x && background.x < (background.x + background.width) && pos.y > background.y && pos.y < (background.y + background.height))) {
+        return false;
+    }
+
     if (actualState === states.playing) {
         player.jump();
     } else if (actualState === states.start) {
@@ -328,6 +374,7 @@ function main() {
     actualState = states.start;
 
     record = localStorage.getItem('record') ? localStorage.getItem('record') : 0;
+    language = localStorage.getItem('language') ? localStorage.getItem('language') : 'pt-br';
 
     image = new Image();
     image.src = 'img/sheet.png';
