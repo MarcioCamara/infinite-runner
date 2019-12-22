@@ -16,3 +16,34 @@ canvas {
     font-family: 'OceanRush';
     src: url('../fonts/OceanRush.otf');
 }
+
+.instructions {
+    max-width: 17vw;
+    width: 17vw;
+    margin: 0;
+    font-family: "OceanRush";
+    font-size: 14px;
+    color: #643421;
+}
+
+.instructions h3, .instructions ol {
+    margin: 16px 8px !important;
+    padding: 0 !important;
+}
+
+.instructions h3 {
+    font-size: x-large;
+}
+
+.instructions p {
+    margin: 0;
+    padding: 0;
+}
+
+.instructions ol {
+    list-style-type: disc;
+}
+
+.instructions li {
+    margin: 16px 12px;
+}
